@@ -1,0 +1,36 @@
+动态代理
+    代理模式
+	为其他对象提供一种代理以控制对这个对象的访问
+    组成
+        抽象角色
+	通过接口或抽象类声明真实实现的业务	
+        代理角色
+	实现抽象角色，是真实角色的代理，通过真实角色的业务逻辑来实现抽象方法，并可以附加自己的操作
+        真实角色
+	事项抽象角色，定义真实角色要实现的业务逻辑，提供代理角色调用
+    优点
+        职业清晰
+	真实角色就是实现实际的业务逻辑，不用关心其他非本职责的事务，通过后期的代理完成一件完成事务，附带的结果就是编程简洁
+        保护对象
+	代理对象可以在两者之间起到中介的作用，并且保护目标对象
+        高扩展性
+    模式结构
+        静态代理
+	由程序员创建或工具生成，在程序运行前就已经存在
+	代理的类很多需要编写大量的代理类，比较繁琐
+        动态代理
+	在实现阶段不用关心代理类，而与你选哪个阶段才指定哪一个对象
+	实现步骤
+	    通过实现InvocationHandler接口创建自己的调用处理器
+	    通过Proxy指定ClassLoader对象和一组interface来创建动态代理类
+	    通过反射机制获取动态代理类的构造函数，其唯一参数类型是调用处理器接口类型
+	    通过构造少函数动态代理类实例，构造时调用处理器对象作为参数被传入
+     源码
+        利用getProxyClass0(loader, intfs)生成代理类Proxy的Class对象。
+        final静态类ProxyClassFactory内部类创建、定义代理类，返回给定ClassLoader 和interfaces的代理类。
+        一系列检查后，调用ProxyGenerator.generateProxyClass来生成字节码文件。
+        生成代理类字节码文件的generateClassFile方法:
+        字节码生成后，调用defineClass0来解析字节码，生成了Proxy的Class对象。
+        在ProxyGenerator.generateProxyClass函数中 saveGeneratedFiles定义如下，其指代是否保存生成的代理类class文件，默认false不保存。
+	修改代码：System.getProperties().setProperty("sun.misc.ProxyGenerator.saveGeneratedFiles", "true");
+
